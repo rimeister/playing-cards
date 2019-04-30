@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Prototype Inheritance Example</title>
+</head>
+<body>
+
+<script type="text/javascript">
+
+	/*********************
+	/*********************
+	 Define object classes
+	 ********************/
+	/*********************
+
+
+
+	/*********************
+	 Teacher inheritance example.
+	 ********************/
+
+	// Person class
+	var Person = function(name,age,height) {
+		this.name = name;
+		this.age = age;
+		this.height = height;
+	}
+
+	Person.prototype.sayName = function() {
+		alert(this.name);
+	} 
+
+	// Teacher, a type of person
+	var Teacher = function(name,age,height,subject,yearsTeaching) {
+		this.name = name;
+		this.age = age;
+		this.height = height;
+		this.subject = subject;
+		this.yearsTeaching = yearsTeaching;
+	}
+
+	Teacher.prototype = Object.create(Person.prototype); // <-- Gets the stuff from the Person.prototype, since a Teacher will have the same methods as a Person, e.g., sayName()
+	
+	// Create a new Teacher
+	var mrSmith = new Teacher('John Smith',40,5.8,'Math',12);
+
+	// Say the Teacher's name
+	mrSmith.sayName();
+
+
+	/*************************************
+	Deck of cards example, no inheritance. 
+	***************************************/
+
+	 var Card = function(suit,value,deck) {
+	 	// Suit is just 0, 1, 2, 4 -- name of suit can be figured out later
+	 	this.suit = suit;
+	 	// Value is 1 to 13 -- Aces, kings, queens, etc, can be figured out later
+	 	this.value = value;
+	 	this.deck = deck;
+	 }
+
+	// Deck class
+	var Deck = function(){
+		this.cards = [];
+	};
+
+	Deck.prototype.init = function() {
+
+		// Create 52 cards, add them to this deck
+
+		// Create 13 cards for each suit
+		for (var i = 0; i < 4; i++) {
+
+			// Create cards for each of values
+			for (var j = 1; j <= 13; j ++) {
+				var newCard = new Card(i,j,this);
+				this.cards.push(newCard);
+			} 
+		}
+
+	}
+
+	Deck.prototype.shuffle = function() {
+
+		// Fisher-Yates shuffle algorithm
+	    var j, x, i;
+	    for (i = this.cards.length - 1; i > 0; i--) {
+	        j = Math.floor(Math.random() * (i + 1));
+	        x = this.cards[i];
+	        this.cards[i] = this.cards[j];
+	        this.cards[j] = x;
+	    }
+
+	} 
+
+	var deckOfCards = new Deck();
+
+	deckOfCards.init();
+
+	deckOfCards.shuffle();
+
+	// Log the cards, check them out now that they've been shuffled
+	console.log(deckOfCards.cards);
+
+
+</script>
+
+</body>
+</html>
